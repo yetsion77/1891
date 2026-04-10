@@ -66,9 +66,9 @@ export default function App() {
       if (snapshot.exists()) {
         const qData = snapshot.val();
         if (Array.isArray(qData)) {
-          setQuestions(qData);
+          setQuestions(qData.filter(q => q != null && q.text));
         } else {
-          setQuestions(Object.keys(qData).map(k => ({ id: k, ...qData[k] })));
+          setQuestions(Object.keys(qData).map(k => ({ id: k, ...qData[k] })).filter(q => q != null && q.text));
         }
       } else {
         setQuestions([]);
@@ -169,7 +169,7 @@ export default function App() {
 function StartScreen({ unit, setUnit, onStart, onAdmin, scores }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-panel text-center">
-      <img src="/logo.png" alt="לוגו מגיני יואב" className="unit-logo" onClick={onAdmin} />
+      <img src="./logo.png" alt="לוגו מגיני יואב" className="unit-logo" onClick={onAdmin} />
       <h1>חידון מגיני יואב 1891</h1>
       <p>ברוכים הבאים לחידון הגדוד! לפניכם 20 שאלות על מורשת, גיאוגרפיה והיסטוריה. יש לכם 20 שניות לענות על כל שאלה. ככל שתענו מהר ונכון יותר - כך תצברו יותר נקודות עבור הפלוגה שלכם!</p>
       
@@ -207,13 +207,14 @@ function GameScreen({ questions, onEnd }) {
   const currentQ = shuffledQuestions[currentIndex];
 
   useEffect(() => {
+    if (!currentQ) return;
     if (!showFeedback && timeLeft > 0) {
       timerRef.current = setTimeout(() => setTimeLeft(prev => prev - 1), 1000);
     } else if (timeLeft === 0 && !showFeedback) {
       handleAnswer(-1); // Timeout -> wrong answer
     }
     return () => clearTimeout(timerRef.current);
-  }, [timeLeft, showFeedback]);
+  }, [timeLeft, showFeedback, currentQ]);
 
   const handleAnswer = (optionIndex) => {
     if (showFeedback) return;
