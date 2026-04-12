@@ -96,12 +96,13 @@ export default function App() {
         const leaderboard = UNITS.map(u => ({
           unit: u,
           avgScore: agg[u].count > 0 ? Math.round(agg[u].totalScore / agg[u].count) : 0,
-          totalScore: agg[u].totalScore
-        })).sort((a, b) => b.totalScore - a.totalScore); // Sort by total score
+          totalScore: agg[u].totalScore,
+          count: agg[u].count
+        })).sort((a, b) => b.avgScore - a.avgScore); // Sort by average score
         
         setScores(leaderboard);
       } else {
-        setScores(UNITS.map(u => ({ unit: u, avgScore: 0, totalScore: 0 })));
+        setScores(UNITS.map(u => ({ unit: u, avgScore: 0, totalScore: 0, count: 0 })));
       }
     });
 
@@ -315,7 +316,8 @@ function Leaderboard({ scores }) {
         <tr>
           <th>מיקום</th>
           <th>פלוגה</th>
-          <th>ניקוד מצטבר</th>
+          <th>ממוצע חייל</th>
+          <th>משתתפים</th>
         </tr>
       </thead>
       <tbody>
@@ -323,7 +325,8 @@ function Leaderboard({ scores }) {
           <tr key={s.unit}>
             <td>{idx + 1}</td>
             <td style={{ fontWeight: 600 }}>{s.unit}</td>
-            <td>{s.totalScore.toLocaleString()}</td>
+            <td style={{ color: 'var(--success)', fontWeight: 'bold' }}>{s.avgScore.toLocaleString()}</td>
+            <td style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{s.count}</td>
           </tr>
         ))}
       </tbody>
