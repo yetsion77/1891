@@ -358,14 +358,12 @@ function AdminScreen({ questions, onClose }) {
       correctAnswer: parseInt(editForm.correctAnswer, 10)
     };
 
-    if (editingId) {
+    if (editingId && editingId !== '__new__') {
       // Update
       const qRef = ref(db, `questions/${editingId}`);
       update(qRef, payload).then(() => setEditingId(null));
     } else {
-      // Create new (use push if we are saving as array or list... wait, questions are an array in seed but converted to obj on read?
-      // Actually push is safer formatting as object but our seed is array. Seed sets to 'questions', giving array indices.
-      // But adding new gives push keys. Our code handles both (Array.isArray(qData) check).
+      // Create new
       const newRef = push(ref(db, 'questions'));
       set(newRef, payload).then(() => setEditingId(null));
     }
@@ -386,7 +384,7 @@ function AdminScreen({ questions, onClose }) {
 
       {editingId !== null ? (
         <div style={{ background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem' }}>
-          <h3>{editingId === 'new' ? 'שאלה חדשה' : 'עריכת שאלה'}</h3>
+          <h3>{editingId === '__new__' ? 'שאלה חדשה' : 'עריכת שאלה'}</h3>
           <input 
             type="text" 
             className="input-control mt-2 mb-2" 
@@ -425,7 +423,7 @@ function AdminScreen({ questions, onClose }) {
           </div>
         </div>
       ) : (
-        <button className="btn mb-3" onClick={() => { setEditingId('new'); setEditForm({ text: '', options: ['', '', '', ''], correctAnswer: 0 }); }}>
+        <button className="btn mb-3" onClick={() => { setEditingId('__new__'); setEditForm({ text: '', options: ['', '', '', ''], correctAnswer: 0 }); }}>
           <Plus size={18} style={{marginLeft:'8px'}}/> הוסף שאלה חדשה
         </button>
       )}
