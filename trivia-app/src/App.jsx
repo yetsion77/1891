@@ -172,7 +172,7 @@ function StartScreen({ unit, setUnit, onStart, onAdmin, scores }) {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-panel text-center">
       <img src="./logo.png" alt="לוגו מגיני יואב" className="unit-logo" onClick={onAdmin} />
       <h1>חידון מגיני יואב 1891</h1>
-      <p>ברוכים הבאים לחידון הגדוד! לפניכם 20 שאלות על מורשת, גיאוגרפיה והיסטוריה. יש לכם 20 שניות לענות על כל שאלה. ככל שתענו מהר ונכון יותר - כך תצברו יותר נקודות עבור הפלוגה שלכם!</p>
+      <p>ברוכים הבאים לחידון הגדוד! לפניכם 20 שאלות על גזרת התעסוקה ועל אזורנו. ככל שתענו מהר ונכון יותר - כך תצברו יותר נקודות עבור הפלוגה שלכם. 20 שניות זוז!</p>
       
       <div className="mb-3">
         <select className="input-control" value={unit} onChange={(e) => setUnit(e.target.value)}>
@@ -285,7 +285,7 @@ function GameScreen({ questions, onEnd }) {
 
       {showFeedback && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center mt-3" style={{ fontSize: '1.2rem', fontWeight: 'bold', color: selectedOption === currentQ.correctAnswer ? 'var(--success)' : 'var(--error)' }}>
-          {selectedOption === currentQ.correctAnswer ? 'כל הכבוד! תשובה נכונה!' : 'טעות משמעת! התשובה הנכונה הודגשה בירוק.'}
+          {selectedOption === currentQ.correctAnswer ? 'כל הכבוד! תשובה נכונה!' : 'התשובה הנכונה הודגשה בירוק.'}
         </motion.div>
       )}
     </motion.div>
