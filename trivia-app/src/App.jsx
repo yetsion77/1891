@@ -378,6 +378,13 @@ function AdminScreen({ questions, onClose }) {
     }
   };
 
+  const handleResetScores = () => {
+    if (window.confirm('האם אתה בטוח שברצונך לאפס את כל תוצאות המשחקים בטבלת המובילים? פעולה זו תמחק את היסטוריית המשחקים ולא ניתן יהיה לשחזר אותה!')) {
+      set(ref(db, 'games'), null);
+      alert('התוצאות אופסו בהצלחה!');
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel">
       <div className="flex justify-between items-center mb-3">
@@ -426,9 +433,14 @@ function AdminScreen({ questions, onClose }) {
           </div>
         </div>
       ) : (
-        <button className="btn mb-3" onClick={() => { setEditingId('__new__'); setEditForm({ text: '', options: ['', '', '', ''], correctAnswer: 0 }); }}>
-          <Plus size={18} style={{marginLeft:'8px'}}/> הוסף שאלה חדשה
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }} className="mb-3">
+          <button className="btn" onClick={() => { setEditingId('__new__'); setEditForm({ text: '', options: ['', '', '', ''], correctAnswer: 0 }); }}>
+            <Plus size={18} style={{marginLeft:'8px'}}/> הוסף שאלה חדשה
+          </button>
+          <button className="btn" style={{ background: 'var(--error)' }} onClick={handleResetScores}>
+            <Trash2 size={18} style={{marginLeft:'8px'}}/> אפס תוצאות משחקים
+          </button>
+        </div>
       )}
 
       <div>
